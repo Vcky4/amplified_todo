@@ -69,17 +69,26 @@ const TodoList = () => {
 
     useEffect(() => {
 
-        //query the initial todolist and subscribe to data updates
-        const subscription = DataStore.observeQuery(Todo).subscribe((snapshot) => {
-            //isSynced can be used to show a loading spinner when the list is being loaded. 
-            const { items, isSynced } = snapshot;
-            setTodos(items);
-        });
+        fetch('https://jsonplaceholder.typicode.com/posts?_limit=10', {
+            method: "GET" // default, so we can ignore
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch((err) => {
+                console.log(err.message);
+             });
 
-        //unsubscribe to data updates when component is destroyed so that we don’t introduce a memory leak.
-        return function cleanup() {
-            subscription.unsubscribe();
-        }
+        // //query the initial todolist and subscribe to data updates
+        // const subscription = DataStore.observeQuery(Todo).subscribe((snapshot) => {
+        //     //isSynced can be used to show a loading spinner when the list is being loaded. 
+        //     const { items, isSynced } = snapshot;
+        //     setTodos(items);
+        // });
+
+        // //unsubscribe to data updates when component is destroyed so that we don’t introduce a memory leak.
+        // return function cleanup() {
+        //     subscription.unsubscribe();
+        // }
 
     }, []);
 
